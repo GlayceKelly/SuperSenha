@@ -9,22 +9,44 @@
 import UIKit
 
 class PasswordsViewController: UIViewController {
-
+    //Controles da view
+    @IBOutlet weak var tvPasswords: UITextView!
+    
+    //Variaveis da classe
+    var numberOfCharacters: Int = 10
+    var numberOfPasswords: Int = 1
+    var useLetters: Bool!
+    var useNumbers: Bool!
+    var useCapitalLetters: Bool!
+    var useSpecialCharacteres: Bool!
+    
+    var passwordGeneretor: PasswordGenerator!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        title = "Total de senhas: \(numberOfPasswords)"
+        
+        passwordGeneretor = PasswordGenerator(numberOfCharacters: numberOfCharacters, useLetters: useLetters, useNumbers: useNumbers, useCapitalLetters: useCapitalLetters, useSpecialCharacters: useSpecialCharacteres)
+        
+        generatePassword()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func generatePassword() {
+        tvPasswords.scrollRangeToVisible(NSRange(location: 0, length: 0))
+        tvPasswords.text = ""
+        
+        let passwords = passwordGeneretor.generate(total: numberOfPasswords)
+        
+        //Percorre as senhas e adiciona na text view
+        for password in passwords {
+            tvPasswords.text.append(password + "\n\n")
+        }
     }
-    */
-
+    
+    
+    @IBAction func generete(_ sender: UIButton) {
+        generatePassword()
+    }
+    
 }
